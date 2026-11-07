@@ -1,0 +1,6 @@
+data/users.json
+data/remote-targets.json
+reports/*
+!reports/.gitkeep
+node_modules/
+.env

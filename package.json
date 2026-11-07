@@ -1,0 +1,13 @@
+{
+  "name": "cloud-vm-monitoring-system",
+  "version": "3.0.0",
+  "description": "Cloud VM Monitoring System - zero dependency reliable demo, with history graphs and remote server/device monitoring",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  }
+}

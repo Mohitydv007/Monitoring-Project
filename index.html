@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+  />
+
+  <meta
+    name="description"
+    content="Cloud VM Monitoring System — track CPU, memory, disk and remote devices in real time."
+  />
+
+  <meta
+    name="theme-color"
+    content="#0f172a"
+  />
+
+  <title>Cloud VM Monitoring System</title>
+
+  <link
+    rel="stylesheet"
+    href="/styles.css"
+  />
+</head>
+
+<body>
+
+  <!-- ===================== AUTH VIEW ===================== -->
+
+  <section
+    id="auth-view"
+    class="auth-view"
+  >
+
+    <div class="auth-card">
+
+      <h1>
+        Cloud VM Monitoring System
+      </h1>
+
+      <p class="subtitle">
+        Sign in to view live performance data.
+      </p>
+
+      <!-- AUTH TABS -->
+
+      <div class="tabs">
+
+        <button
+          type="button"
+          class="tab-btn active"
+          data-tab="login"
+        >
+          Login
+        </button>
+
+        <button
+          type="button"
+          class="tab-btn"
+          data-tab="register"
+        >
+          Create account
+        </button>
+
+      </div>
+
+
+      <!-- LOGIN FORM -->
+
+      <form
+        id="login-form"
+        class="auth-form"
+      >
+
+        <label for="login-email">
+          Email
+        </label>
+
+        <input
+          id="login-email"
+          type="email"
+          required
+          autocomplete="email"
+        />
+
+
+        <label for="login-password">
+          Password
+        </label>
+
+        <input
+          id="login-password"
+          type="password"
+          required
+          autocomplete="current-password"
+        />
+
+
+        <button type="submit">
+          Login
+        </button>
+
+      </form>
+
+
+      <!-- REGISTER FORM -->
+
+      <form
+        id="register-form"
+        class="auth-form hidden"
+      >
+
+        <label for="register-name">
+          Full name
+        </label>
+
+        <input
+          id="register-name"
+          type="text"
+          required
+          autocomplete="name"
+        />
+
+
+        <label for="register-email">
+          Email
+        </label>
+
+        <input
+          id="register-email"
+          type="email"
+          required
+          autocomplete="email"
+        />
+
+
+        <label for="register-password">
+          Password (6+ characters)
+        </label>
+
+        <input
+          id="register-password"
+          type="password"
+          required
+          minlength="6"
+          autocomplete="new-password"
+        />
+
+
+        <button type="submit">
+          Create account
+        </button>
+
+      </form>
+
+
+      <!-- AUTH ERROR -->
+
+      <p
+        id="auth-error"
+        class="error hidden"
+      ></p>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ===================== DASHBOARD VIEW ===================== -->
+
+  <section
+    id="dashboard-view"
+    class="dashboard-view hidden"
+  >
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+      <h1>
+        Cloud VM Monitoring System
+      </h1>
+
+
+      <div class="topbar-actions">
+
+        <span id="user-label"></span>
+
+
+        <button
+          id="report-btn"
+          class="btn btn--primary"
+        >
+          Generate Report
+        </button>
+
+
+        <button
+          id="logout-btn"
+          class="btn btn--ghost"
+        >
+          Sign out
+        </button>
+
+      </div>
+
+    </header>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="content">
+
+
+      <!-- METRICS -->
+
+      <section class="grid">
+
+
+        <!-- CPU -->
+
+        <div class="card">
+
+          <h2>
+            CPU Usage
+          </h2>
+
+          <p
+            class="metric"
+            id="cpu-value"
+          >
+            —
+          </p>
+
+          <div class="bar">
+            <div
+              id="cpu-bar"
+              class="bar__fill"
+            ></div>
+          </div>
+
+        </div>
+
+
+
+        <!-- MEMORY -->
+
+        <div class="card">
+
+          <h2>
+            Memory Usage
+          </h2>
+
+          <p
+            class="metric"
+            id="memory-value"
+          >
+            —
+          </p>
+
+          <div class="bar">
+
+            <div
+              id="memory-bar"
+              class="bar__fill"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- DISK -->
+
+        <div class="card">
+
+          <h2>
+            Disk Usage
+          </h2>
+
+          <p
+            class="metric"
+            id="disk-value"
+          >
+            —
+          </p>
+
+          <div class="bar">
+
+            <div
+              id="disk-bar"
+              class="bar__fill"
+            ></div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- UPTIME -->
+
+        <div class="card">
+
+          <h2>
+            System Uptime
+          </h2>
+
+          <p
+            class="metric"
+            id="uptime-value"
+          >
+            —
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ===================== HISTORY CHART ===================== -->
+
+      <section class="card chart-card">
+
+        <h2>
+          Live Performance (this machine)
+        </h2>
+
+
+        <canvas
+          id="history-chart"
+          width="900"
+          height="220"
+        ></canvas>
+
+
+        <div class="legend">
+
+          <span>
+            <i class="dot dot--cpu"></i>
+            CPU
+          </span>
+
+
+          <span>
+            <i class="dot dot--mem"></i>
+            Memory
+          </span>
+
+
+          <span>
+            <i class="dot dot--disk"></i>
+            Disk
+          </span>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- ===================== REMOTE DEVICES ===================== -->
+
+      <section class="card">
+
+        <h2>
+          Monitor Another Server / Device
+        </h2>
+
+
+        <p class="hint">
+
+          Run this same project on another machine
+          (<code>npm start</code>), then add its
+          address below — e.g.
+          <code>http://192.168.1.20:5000</code>.
+
+          It must be reachable on your network.
+
+        </p>
+
+
+        <!-- REMOTE DEVICE FORM -->
+
+        <form
+          id="remote-form"
+          class="remote-form"
+        >
+
+          <input
+            id="remote-name"
+            type="text"
+            placeholder="Device name (e.g. Office Laptop)"
+            required
+          />
+
+
+          <input
+            id="remote-url"
+            type="text"
+            placeholder="http://192.168.1.20:5000"
+            required
+          />
+
+
+          <button
+            type="submit"
+            class="btn btn--primary"
+          >
+            Add device
+          </button>
+
+        </form>
+
+
+        <!-- REMOTE ERROR -->
+
+        <p
+          id="remote-error"
+          class="error hidden"
+        ></p>
+
+
+        <!-- REMOTE TABLE -->
+
+        <table class="remote-table">
+
+          <thead>
+
+            <tr>
+
+              <th>
+                Name
+              </th>
+
+              <th>
+                Status
+              </th>
+
+              <th>
+                CPU
+              </th>
+
+              <th>
+                Memory
+              </th>
+
+              <th>
+                Disk
+              </th>
+
+              <th>
+                Last checked
+              </th>
+
+              <th></th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="remote-list">
+
+            <tr>
+
+              <td
+                colspan="7"
+                class="muted"
+              >
+                No devices added yet.
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </section>
+
+    </main>
+
+
+
+    <!-- ===================== FOOTER ===================== -->
+
+    <footer class="footer">
+
+      <p>
+        Last updated:
+        <span id="last-updated">
+          never
+        </span>
+      </p>
+
+    </footer>
+
+  </section>
+
+
+
+  <!-- ===================== JAVASCRIPT ===================== -->
+
+  <script src="/app.js"></script>
+
+</body>
+</html>
